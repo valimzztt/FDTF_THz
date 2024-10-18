@@ -1,21 +1,70 @@
 import numpy as np
 from fdtd_plotting import clFDTplot
-
+from clFDT_main import clFDTmain
 # ######################
 # Numerical stepping parameters
 # ######################
 class Config:
     def __init__(self):
-        self.xpmtype = 1         # experiment type: 1 (1Dprobe), 2 (1Dpump), 3 (2Dpump-probe)
-        self.prop = 1            # evolve system, 0 or 1
-        self.parallel = 0        # Enable parallel processing of 2Dpumpprobe
-        self.diffusion = 0       # activation of diffusion and surface recombination of carriers
-        self.xpmid = 'test'      # name of experiment (used for saving)
-        self.save = 0            # save input and output data
-        self.Nh = 2**9           # spatial domain resolution
-        self.Nt = 2**16          # time steps
-        self.Nsav = 2**10        # number of time steps stored
-        self.Q = 1               # FDTD quality factor
+        # ######################
+        # Numerical stepping parameters
+        # ######################
+        self.xpmtype = 1          # experiment type: 1 (1Dprobe), 2 (1Dpump), 3 (2Dpump-probe)
+        self.prop = 1             # evolve system, 0 or 1
+        self.parallel = 0         # Enable parallel processing of 2Dpumpprobe
+        self.diffusion = 0        # activation of diffusion and surface recombination of carriers
+        self.xpmid = 'test'       # name of experiment (used for saving)
+        self.save = 0             # save input and output data, 0 or 1
+        self.Nh = 2**9            # spatial domain resolution
+        self.Nt = 2**16           # time steps
+        self.Nsav = 2**10         # number of time steps stored
+        self.Q = 1                # FDTD quality factor
+
+        # ######################
+        # Probe pulse
+        # ######################
+        self.useEref = 0          # use the eref in file 'Eref.dat', 0 or 1
+        self.EA = 100             # amplitude of pulse, ab.unit
+        self.t0 = 1               # time of start of pulse, ps
+        self.ome0 = 3 * 2 * np.pi # center frequency, THz
+        self.pulseW = 1.5 / self.ome0  # envelope of pulse in time, ps
+        self.chirp = 0            # chirp of probe pulse, ps^-1
+
+        # ######################
+        # Pump pulse
+        # ######################
+        self.usepump = 0          # use the pump: 0 or 1
+        self.tp = 1               # pump delay [1Dprobe] or first pump delay [1Dpump], ps
+        self.ng = 4               # group index of refraction of pump
+        self.pumpW = 0.1          # pump time-width, ps
+        self.F = 80               # pump fluence, µJ/cm^2/pulse
+        self.lamp = 0.8           # pump wavelength, µm
+        self.abp = 100            # absorption depth of pump, µm
+        self.Rpump = 0.33         # reflectance of pump at pump wavelength
+        self.mintp = -4           # first pump delay, ps (specific for 2D pump-probe)
+        self.maxtp = 2            # last pump delay, ps (specific for 2D pump-probe)
+        self.Ntp = 10             # number of pump delays (specific for 2D pump-probe)
+        self.tpfac1D = 200        # increase time step size by this factor (specific for 1D pump)
+        self.pumpexp = 0          # exponential density at start (for long times), 0 or 1
+        self.densityconst = 1     # homogeneous density at start, 0 or 1
+
+        # ######################
+        # Medium
+        # ######################
+        self.d = 10               # thickness of simulated region, µm
+        self.eps00 = 13           # background relative permittivity
+        self.epsin = 1            # relative permittivity at input side
+        self.epsout = self.eps00  # relative permittivity at output side
+        
+        
+        #######################
+        # PML (boundaries)
+        # ######################
+        self.Amax = 0.18574656389; # absorption coefficient of PML
+        self.Am = 1.4293377164138; # PML m parameter
+        self.Ah = 20;              # width of PML
+        self.sph = 3;              # size of space between elements in the domain
+
 
 # ######################
 # Probe pulse
