@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def clFDTplot(c, m, ps, o):
+def clFDTplot(c, m, ps):
     """
     Function to plot the results of FDTD simulation.
     It calls the subplot function for each result.

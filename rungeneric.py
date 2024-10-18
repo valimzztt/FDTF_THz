@@ -126,7 +126,5 @@ o = [{
 }]
  
 # Call main FDTD function
-output = clFDTplot(config, mediums, plot_params)
+output = clFDTmain(config, mediums, plot_params)
 
-# Print the output for verification (for example)
-print(output)
